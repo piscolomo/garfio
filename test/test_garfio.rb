@@ -51,4 +51,17 @@ scope do
 
     assert_equal 5, u_instance.get_sum
   end
+
+  test "hook before and after" do
+    u = Class.new(User) do
+        set_hook :register_user do
+          before :send_greeting
+          after :send_mail
+        end
+      end
+    u_instance = u.new
+    u_instance.register_user
+
+    assert_equal 6, u_instance.get_sum
+  end
 end
