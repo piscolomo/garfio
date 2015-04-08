@@ -1,9 +1,11 @@
 require File.expand_path("../lib/garfio", File.dirname(__FILE__))
 
 class User
-  extend Garfio
+  include Garfio
 
-  @@sum = 0
+  def initialize
+    @@sum = 0
+  end
 
   def send_greeting
     @@sum += 1
@@ -27,15 +29,26 @@ end
 
 scope do
   test "hook before" do
-    class User
-      set_hook :register_user do
-        before :send_greeting
+    u = Class.new(User) do
+        set_hook :register_user do
+          before :send_greeting
+        end
       end
-    end
+    u_instance = u.new
+    u_instance.register_user
 
-    u = User.new
-    u.register_user
+    assert_equal 3, u_instance.get_sum
+  end
 
-    assert_equal 3, u.get_sum
+  test "hook after" do
+    u = Class.new(User) do
+        set_hook :register_user do
+          after :send_mail
+        end
+      end
+    u_instance = u.new
+    u_instance.register_user
+
+    assert_equal 5, u_instance.get_sum
   end
 end
