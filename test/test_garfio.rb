@@ -22,6 +22,14 @@ class User
     puts "take your email"
   end
 
+  def some_method(n = 4)
+    @@sum += n
+  end
+
+  def some_other_method(n = 5)
+    @@sum += n
+  end
+
   def get_sum
     @@sum
   end
@@ -76,5 +84,59 @@ scope do
     u_instance.register_user(10)
 
     assert_equal 14, u_instance.get_sum
+  end
+
+  test "sending a block in before" do
+    u = Class.new(User) do
+        set_hook :register_user do
+          before { some_method }
+        end
+      end
+    u_instance = u.new
+    u_instance.register_user
+
+    assert_equal 6, u_instance.get_sum
+  end
+
+  test "sending a complex block in before" do
+    u = Class.new(User) do
+        set_hook :register_user do
+          before do
+            some_method 5
+            some_other_method 8
+          end
+        end
+      end
+    u_instance = u.new
+    u_instance.register_user
+
+    assert_equal 15, u_instance.get_sum
+  end
+
+  test "sending a block in after" do
+    u = Class.new(User) do
+        set_hook :register_user do
+          after { some_method }
+        end
+      end
+    u_instance = u.new
+    u_instance.register_user
+
+    assert_equal 6, u_instance.get_sum
+  end
+
+  test "sending a complex block in after" do
+    u = Class.new(User) do
+        set_hook :register_user do
+          after do
+            some_method 5
+            some_other_method 8
+          end
+        end
+      end
+    u_instance = u.new
+    u_instance.register_user
+
+    assert_equal 15, u_instance.get_sum
   end
 end

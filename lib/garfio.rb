@@ -11,8 +11,8 @@ module Garfio
 
     private
     [:before, :after].each do |name|
-      define_method name do |method_name|
-        instance_variable_set("@hook_#{name}", method_name)
+      define_method name do |method_name = nil, &block|
+        instance_variable_set("@hook_#{name}", method_name || block)
       end
     end
   end
@@ -22,9 +22,13 @@ module Garfio
       gar = GarfioHooks.new &block
       send :alias_method, "old_#{original_method}", original_method
       send :define_method, original_method do |*args|
-        send(gar.hook_before) if gar.hook_before
+        if this = gar.hook_before
+          this.is_a?(Proc) ? instance_eval(&this) : send(this)
+        end
         send "old_#{original_method}", *args
-        send(gar.hook_after) if gar.hook_after
+        if this = gar.hook_after
+          this.is_a?(Proc) ? instance_eval(&this) : send(this)
+        end
       end
     end
   end
