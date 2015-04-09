@@ -13,17 +13,13 @@ module Garfio
     end
   end
 
-  def set_hook(original_method, &block)
+  def set_hook(original_method, _v = "", &block)
     gar = GarfioHooks.new &block
     send :alias_method, "old_#{original_method}", original_method
     send :define_method, original_method do |*args|
-      if this = gar.hook_before
-        this.is_a?(Proc) ? instance_eval(&this) : send(this)
-      end
+      _v.is_a?(Proc) ? instance_eval(&_v) : send(_v) if _v = gar.hook_before
       send "old_#{original_method}", *args
-      if this = gar.hook_after
-        this.is_a?(Proc) ? instance_eval(&this) : send(this)
-      end
+      _v.is_a?(Proc) ? instance_eval(&_v) : send(_v) if _v = gar.hook_after
     end
   end
 end
