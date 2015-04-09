@@ -9,17 +9,14 @@ class User
 
   def send_greeting
     @@sum += 1
-    puts "preparing the welcome message..."
   end
 
   def register_user(n = 2)
     @@sum += n
-    puts "registering_user"
   end
 
   def send_mail
     @@sum += 3
-    puts "take your email"
   end
 
   def some_method(n = 4)
@@ -138,5 +135,18 @@ scope do
     u_instance.register_user
 
     assert_equal 15, u_instance.get_sum
+  end
+
+  test "hook method return a value" do
+    u = Class.new(User) do
+        set_hook :register_user do
+          after do
+            some_method 5
+            some_other_method 8
+          end
+        end
+      end
+    u_instance = u.new
+    assert_equal 2, u_instance.register_user
   end
 end

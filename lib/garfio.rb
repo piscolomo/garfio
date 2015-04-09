@@ -18,8 +18,9 @@ module Garfio
     send :alias_method, "old_#{original_method}", original_method
     send :define_method, original_method do |*args|
       _v.is_a?(Proc) ? instance_eval(&_v) : send(_v) if _v = gar.hook_before
-      send "old_#{original_method}", *args
+      return_value = send "old_#{original_method}", *args
       _v.is_a?(Proc) ? instance_eval(&_v) : send(_v) if _v = gar.hook_after
+      return_value
     end
   end
 end
