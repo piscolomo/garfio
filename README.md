@@ -20,7 +20,7 @@ Require it with require 'garfio'.
 Usage
 -----
 
-Once you have extend Garfio, define your before and after callbacks in the `set_hook` method, your callbacks recognize method sending his names as symbols
+Once you have extend Garfio, you can define your before and after callbacks in the `set_hook` method, your callback recognize the method sending his name as symbol
 
 ```ruby
 class User
