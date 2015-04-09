@@ -1,4 +1,4 @@
-require "./lib/ate"
+require "./lib/garfio"
 
 Gem::Specification.new do |s|
   s.name              = "garfio"

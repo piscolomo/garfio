@@ -15,7 +15,7 @@ Installing Garfio is as simple as running:
 $ gem install garfio
 ```
 
-Require it with require 'garfio'.
+Include Garfio in your Gemfile with gem 'garfio' or require it with require 'garfio'.
 
 Usage
 -----
