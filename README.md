@@ -1,11 +1,11 @@
 Garfio
 ====
 
-Garfio helps you to build hooks in your ruby objects, is minimalist and completely framework-agnostic
+Garfio helps you to build hooks in your ruby objects, is minimalist and  framework-agnostic.
 
 ## Introduction
 
-With few lines of code, one method compilation and no method missing Garfio with an easy way lets you to launch callbacks before and after of your methods.
+With few lines of code, one method compilation, no monkey patching and no `method missing Garfio` lets you launch callbacks before and after of your methods as soon as you run them.
 
 ## Installation
 
