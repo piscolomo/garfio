@@ -1,4 +1,6 @@
 module Garfio
+  VERSION = "1.0.0"
+
   class GarfioHooks
     attr_reader :hook_before, :hook_after
     def initialize(&block)

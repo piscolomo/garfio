@@ -5,7 +5,7 @@ Garfio helps you to build hooks in your ruby objects, is minimalist and complete
 
 ## Introduction
 
-With few lines of code, one method compilation and no method missing Garfio let you an easy way to launch callbacks before and after of the methods of your objects.
+With few lines of code, one method compilation and no method missing Garfio with an easy way lets you to launch callbacks before and after of the methods of your objects.
 
 ## Installation
 
@@ -35,7 +35,6 @@ class User
   end
 
   def send_mailer
-    @@sum += 3
     puts "sending to your email"
   end
 
