@@ -1,7 +1,7 @@
 require File.expand_path("../lib/garfio", File.dirname(__FILE__))
 
 class User
-  include Garfio
+  extend Garfio
 
   def initialize
     @@sum = 0

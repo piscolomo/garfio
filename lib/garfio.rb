@@ -1,8 +1,4 @@
 module Garfio
-  def self.included(klass)
-    klass.extend ClassMethods
-  end
-
   class GarfioHooks
     attr_reader :hook_before, :hook_after
     def initialize(&block)
@@ -17,23 +13,17 @@ module Garfio
     end
   end
 
-  module ClassMethods
-    def set_hook(original_method, &block)
-      gar = GarfioHooks.new &block
-      send :alias_method, "old_#{original_method}", original_method
-      send :define_method, original_method do |*args|
-        if this = gar.hook_before
-          this.is_a?(Proc) ? instance_eval(&this) : send(this)
-        end
-        send "old_#{original_method}", *args
-        if this = gar.hook_after
-          this.is_a?(Proc) ? instance_eval(&this) : send(this)
-        end
+  def set_hook(original_method, &block)
+    gar = GarfioHooks.new &block
+    send :alias_method, "old_#{original_method}", original_method
+    send :define_method, original_method do |*args|
+      if this = gar.hook_before
+        this.is_a?(Proc) ? instance_eval(&this) : send(this)
+      end
+      send "old_#{original_method}", *args
+      if this = gar.hook_after
+        this.is_a?(Proc) ? instance_eval(&this) : send(this)
       end
     end
-  end
-
-  def set_hook(original_method, &block)
-    self.class.set_hook(original_method, &block)
   end
 end
